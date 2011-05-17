@@ -1,0 +1,119 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-01-20 00:33-0500\n"
+"PO-Revision-Date: 2010-03-07 14:55+0200\n"
+"Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: vi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Pootle 2.0.1\n"
+
+#: activity/activity.info:2
+msgid "Get Books"
+msgstr "Lấy sách"
+
+#: GetIABooksActivity.py:94
+msgid "Get Book"
+msgstr "Lấy sách"
+
+#: GetIABooksActivity.py:159
+#, python-format
+msgid "%.2f GB Volume"
+msgstr "Khối tin %.2f GB"
+
+#: GetIABooksActivity.py:217
+msgid "Books"
+msgstr "Sách"
+
+#: GetIABooksActivity.py:233
+msgid "Enter words from the Author or Title to begin search."
+msgstr "Gõ từ của Tác giả hay Tên sách để bắt đầu tìm kiếm."
+
+#: GetIABooksActivity.py:292
+msgid "Title:\t\t"
+msgstr "Tên sách:\t\t"
+
+#: GetIABooksActivity.py:294
+msgid "Author:\t\t"
+msgstr "Tác giả:\t\t"
+
+#: GetIABooksActivity.py:296
+msgid "Publisher:\t"
+msgstr "Nhà xuất bản:\t"
+
+#: GetIABooksActivity.py:297
+msgid "Language:\t"
+msgstr "Ngôn ngữ:\t"
+
+#: GetIABooksActivity.py:302
+msgid "Link:\t\t"
+msgstr "Liên kết:\t\t"
+
+#: GetIABooksActivity.py:323 GetIABooksActivity.py:331
+#: GetIABooksActivity.py:403
+msgid "Error"
+msgstr "Lỗi"
+
+#: GetIABooksActivity.py:323 GetIABooksActivity.py:331
+msgid "You must enter at least one search word."
+msgstr "Phải gõ ít nhất một từ cần tìm."
+
+#: GetIABooksActivity.py:340
+msgid "Performing lookup, please wait..."
+msgstr "Đang tra tìm, hãy đợi..."
+
+#: GetIABooksActivity.py:349
+msgid "Sorry, no books could be found."
+msgstr "Tiếc là không tìm thấy cuốn sách nào."
+
+#: GetIABooksActivity.py:403
+msgid "Connection timed out for "
+msgstr "Kết nối quá hạn trong "
+
+#: GetIABooksActivity.py:440
+#, python-format
+msgid ""
+"Error: Could not download %s . The path in the catalog seems to be incorrect"
+msgstr "Lỗi: không thể tải về %s . Thế là phân loại chứa một đường dẫn sai"
+
+#: GetIABooksActivity.py:470
+#, python-format
+msgid "Success: %s was added to Journal."
+msgstr "Thành công: %s đã được thêm vào Nhật ký."
+
+#: listview.py:40
+msgid "Title"
+msgstr "Tên sách"
+
+#: listview.py:41
+msgid "Author"
+msgstr "Tác giả"
+
+#: listview.py:42
+msgid "Publisher"
+msgstr "Nhà xuất bản"
+
+#: listview.py:43
+msgid "Language"
+msgstr "Ngôn ngữ"
+
+#: listview.py:44
+msgid "Publish Date"
+msgstr "Ngày xuất bản"

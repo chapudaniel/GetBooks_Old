@@ -1,0 +1,148 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-01-20 00:33-0500\n"
+"PO-Revision-Date: 2010-02-16 07:15+0200\n"
+"Last-Translator: Chris <cjl@laptop.org>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: sq\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.0.1\n"
+
+#: activity/activity.info:2
+msgid "Get Books"
+msgstr "Merr Libra"
+
+#: GetIABooksActivity.py:94
+msgid "Get Book"
+msgstr "Merr Libër"
+
+#: GetIABooksActivity.py:159
+#, python-format
+msgid "%.2f GB Volume"
+msgstr "%.2f GB Sasi"
+
+#: GetIABooksActivity.py:217
+msgid "Books"
+msgstr "Libra"
+
+#: GetIABooksActivity.py:233
+msgid "Enter words from the Author or Title to begin search."
+msgstr "Shkruani fjalë nga Autori apo Titulli për të filluar kërkimin."
+
+#: GetIABooksActivity.py:292
+msgid "Title:\t\t"
+msgstr "Titulli:\t\t"
+
+#: GetIABooksActivity.py:294
+msgid "Author:\t\t"
+msgstr "Autori:\t\t"
+
+#: GetIABooksActivity.py:296
+msgid "Publisher:\t"
+msgstr "Botuesi:\t"
+
+#: GetIABooksActivity.py:297
+msgid "Language:\t"
+msgstr "Gjuha:\t"
+
+#: GetIABooksActivity.py:302
+msgid "Link:\t\t"
+msgstr "Lidhja:\t\t"
+
+#: GetIABooksActivity.py:323 GetIABooksActivity.py:331
+#: GetIABooksActivity.py:403
+msgid "Error"
+msgstr "Gabim"
+
+#: GetIABooksActivity.py:323 GetIABooksActivity.py:331
+msgid "You must enter at least one search word."
+msgstr "Ju duhet të shënoni në të paktën një fjalë të kërkimit."
+
+#: GetIABooksActivity.py:340
+msgid "Performing lookup, please wait..."
+msgstr "Duke e zbatuar rregullimin, ju lutem prisni..."
+
+#: GetIABooksActivity.py:349
+msgid "Sorry, no books could be found."
+msgstr "Na vjen keq, asnjë libër nuk u gjet."
+
+#: GetIABooksActivity.py:403
+msgid "Connection timed out for "
+msgstr "Lidhje u ndërpre jashtë për "
+
+#: GetIABooksActivity.py:440
+#, python-format
+msgid ""
+"Error: Could not download %s . The path in the catalog seems to be incorrect"
+msgstr ""
+"Gabim: Nuk mund të shkarkoni %s. Kalimi në katalogun duket të jetë e pasaktë"
+
+#: GetIABooksActivity.py:470
+#, python-format
+msgid "Success: %s was added to Journal."
+msgstr "Suksesi: %s është shtuar në Protokoll."
+
+#: listview.py:40
+msgid "Title"
+msgstr "Titulli"
+
+#: listview.py:41
+msgid "Author"
+msgstr "Autori"
+
+#: listview.py:42
+msgid "Publisher"
+msgstr "Botuesi"
+
+#: listview.py:43
+msgid "Language"
+msgstr "Gjuha"
+
+#: listview.py:44
+msgid "Publish Date"
+msgstr "Data e Botimit"

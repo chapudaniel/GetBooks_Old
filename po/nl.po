@@ -1,0 +1,136 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-01-20 00:33-0500\n"
+"PO-Revision-Date: 2010-06-29 10:14+0200\n"
+"Last-Translator: whe <heppew@yahoo.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: nl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.0.3\n"
+
+#: activity/activity.info:2
+msgid "Get Books"
+msgstr "Neem Boeken"
+
+#: GetIABooksActivity.py:94
+msgid "Get Book"
+msgstr "Neem Boek"
+
+#: GetIABooksActivity.py:159
+#, python-format
+msgid "%.2f GB Volume"
+msgstr "%.2f GB Volume"
+
+#: GetIABooksActivity.py:217
+msgid "Books"
+msgstr "Boeken"
+
+#: GetIABooksActivity.py:233
+msgid "Enter words from the Author or Title to begin search."
+msgstr "Voer woorden van de Auteur of Titel in om zoeken te beginnen."
+
+#: GetIABooksActivity.py:292
+msgid "Title:\t\t"
+msgstr "Titel:\t\t"
+
+#: GetIABooksActivity.py:294
+msgid "Author:\t\t"
+msgstr "Auteur:\t\t"
+
+#: GetIABooksActivity.py:296
+msgid "Publisher:\t"
+msgstr "Uitgever:\t"
+
+#: GetIABooksActivity.py:297
+msgid "Language:\t"
+msgstr "Taal:\t"
+
+#: GetIABooksActivity.py:302
+msgid "Link:\t\t"
+msgstr "Link:\t\t"
+
+#: GetIABooksActivity.py:323 GetIABooksActivity.py:331
+#: GetIABooksActivity.py:403
+msgid "Error"
+msgstr "Fout"
+
+#: GetIABooksActivity.py:323 GetIABooksActivity.py:331
+msgid "You must enter at least one search word."
+msgstr "Je moet tenminste één zoekwoord invoeren."
+
+#: GetIABooksActivity.py:340
+msgid "Performing lookup, please wait..."
+msgstr "Aan het opzoeken, even geduld aub..."
+
+#: GetIABooksActivity.py:349
+msgid "Sorry, no books could be found."
+msgstr "Sorry, geen boeken gevonden."
+
+#: GetIABooksActivity.py:403
+msgid "Connection timed out for "
+msgstr "Tijdoverschrijding bij verbinding voor "
+
+#: GetIABooksActivity.py:440
+#, python-format
+msgid ""
+"Error: Could not download %s . The path in the catalog seems to be incorrect"
+msgstr ""
+"Fout: Kan niet downloaden %s . Het pad in de catalogus lijkt niet correct"
+
+#: GetIABooksActivity.py:470
+#, python-format
+msgid "Success: %s was added to Journal."
+msgstr "Succes: %s is aan Dagboek toegevoegd."
+
+#: listview.py:40
+msgid "Title"
+msgstr "Titel"
+
+#: listview.py:41
+msgid "Author"
+msgstr "Auteur"
+
+#: listview.py:42
+msgid "Publisher"
+msgstr "Uitgever"
+
+#: listview.py:43
+msgid "Language"
+msgstr "Taal"
+
+#: listview.py:44
+msgid "Publish Date"
+msgstr "Uitgeefdatum"
