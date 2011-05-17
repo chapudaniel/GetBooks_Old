@@ -35,6 +35,9 @@ import feedparser
 _logger = logging.getLogger('get-ia-books-activity')
 
 _REL_OPDS_ACQUISTION = u'http://opds-spec.org/acquisition'
+_REL_OPDS_POPULAR = u'http://opds-spec.org/sort/popular'
+_REL_OPDS_NEW = u'http://opds-spec.org/sort/new'
+_REL_SUBSECTION = 'subsection'
 
 gobject.threads_init()
 
@@ -119,6 +122,7 @@ class Book(object):
         return ret
 
     def get_download_links(self):
+        # logging.debug(self._entry['links'])
         ret = {}
         for link in self._entry['links']:
             if link['rel'] == _REL_OPDS_ACQUISTION:
@@ -129,7 +133,12 @@ class Book(object):
                         + os.path.join(self._basepath, link['href'])
                 else:
                     ret[link['type']] = link['href']
-
+            elif link['rel'] in [_REL_OPDS_POPULAR, _REL_OPDS_NEW, _REL_SUBSECTION]:
+                ret[link['type']] = link['href']
+            else:
+                pass
+                # logging.debug('OOOOOOOOOO:')
+                # logging.debug(link['rel'])
         return ret
 
     def get_publisher(self):
