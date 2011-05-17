@@ -137,9 +137,14 @@ class Book(object):
                 ret[link['type']] = link['href']
             else:
                 pass
-                # logging.debug('OOOOOOOOOO:')
-                # logging.debug(link['rel'])
         return ret
+
+    def entry_type(self):
+        for link in self._entry['links']:
+            if link['rel'] in [_REL_OPDS_POPULAR, _REL_OPDS_NEW, _REL_SUBSECTION]:
+                return "CATALOGO"
+            else:
+                return "DETODO"
 
     def get_publisher(self):
         try:

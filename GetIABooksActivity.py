@@ -533,7 +533,9 @@ class GetIABooksActivity(activity.Activity):
                         self.selected_book.get_language())
             except:
                 self.selected_language = self.selected_book.get_language()
+
             book_data += _('Language:\t') + self.selected_language + '\n'
+        book_data += _('Type:\t') + self.selected_book.entry_type() + '\n'
         book_data += _('Publisher:\t') + self.selected_publisher + '\n'
         if self.source != 'local_books':
             try:
