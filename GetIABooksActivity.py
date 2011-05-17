@@ -196,6 +196,10 @@ class GetIABooksActivity(activity.Activity):
                 repo_config = {}
                 repo_config['query_uri'] = config.get(section, 'query_uri')
                 repo_config['opds_cover'] = config.get(section, 'opds_cover')
+                if config.has_option(section, 'summary_field'):
+                        repo_config['summary_field'] = config.get(section, 'summary_field')
+                else:
+                        repo_config['summary_field'] = None
                 _SOURCES_CONFIG[section] = repo_config
 
         logging.error('_SOURCES %s', _SOURCES)
@@ -451,6 +455,7 @@ class GetIABooksActivity(activity.Activity):
         bottom_hbox = gtk.HBox()
 
         if self.show_images:
+            self.__image_downloader = None
             self.image = gtk.Image()
             self.add_default_image()
             bottom_hbox.pack_start(self.image, False, False, 10)
@@ -509,11 +514,13 @@ class GetIABooksActivity(activity.Activity):
 
     def show_book_data(self, load_image=True):
         self.selected_title = self.selected_book.get_title()
-        book_data = _('Title:\t\t') + self.selected_title + '\n\n'
+        book_data = _('Title:\t\t') + self.selected_title + '\n'
         self.selected_author = self.selected_book.get_author()
-        book_data += _('Author:\t\t') + self.selected_author + '\n\n'
+        book_data += _('Author:\t\t') + self.selected_author + '\n'
         self.selected_publisher = self.selected_book.get_publisher()
-        book_data += _('Publisher:\t') + self.selected_publisher + '\n\n'
+        self.selected_summary = self.selected_book.get_summary()
+        if (self.selected_summary is not 'Unknown'):
+            book_data += _('Summary:\t') + self.selected_summary + '\n'
         self.selected_language_code = self.selected_book.get_language()
         if self.selected_language_code != '':
             try:
@@ -522,13 +529,12 @@ class GetIABooksActivity(activity.Activity):
                         self.selected_book.get_language())
             except:
                 self.selected_language = self.selected_book.get_language()
-            book_data += _('Language:\t') + self.selected_language + '\n\n'
+            book_data += _('Language:\t') + self.selected_language + '\n'
+        book_data += _('Publisher:\t') + self.selected_publisher + '\n'
         if self.source != 'local_books':
             try:
                 self.download_url = self.selected_book.get_download_links()[\
                         self.format_combo.props.value]
-                if len(self.download_url) > 0:
-                    book_data += _('Link:\t\t') + self.download_url
             except:
                 pass
         textbuffer = self.textview.get_buffer()
@@ -548,10 +554,9 @@ class GetIABooksActivity(activity.Activity):
                     self.add_default_image()
             else:
                 url_image = self.selected_book.get_image_url()
+                self.add_default_image()
                 if url_image:
                     self.download_image(url_image.values()[0])
-                else:
-                    self.add_default_image()
 
     def get_pixbuf_from_buffer(self, image_buffer):
         """Buffer To Pixbuf"""
@@ -573,8 +578,10 @@ class GetIABooksActivity(activity.Activity):
 
     def download_image(self,  url):
         self._inhibit_suspend()
-        image_downloader = opds.ImageDownloader(self, url)
-        image_downloader.connect('updated', self.__image_updated_cb)
+        if self.__image_downloader is not None:
+            self.__image_downloader.stop_download()
+        self.__image_downloader = opds.ImageDownloader(self, url)
+        self.__image_downloader.connect('updated', self.__image_updated_cb)
 
     def __image_updated_cb(self, downloader, file_name):
         if file_name is not None:
@@ -583,6 +590,7 @@ class GetIABooksActivity(activity.Activity):
             os.remove(file_name)
         else:
             self.add_default_image()
+        self.__image_downloader = None
         self._allow_suspend()
 
     def add_default_image(self):
@@ -841,8 +849,10 @@ class GetIABooksActivity(activity.Activity):
             journal_entry.metadata['cover_image'] = ""
 
         journal_entry.metadata['tags'] = self.source
+        journal_entry.metadata['source'] = self.source
         journal_entry.metadata['author'] = self.selected_author
         journal_entry.metadata['publisher'] = self.selected_publisher
+        journal_entry.metadata['summary'] = self.selected_summary
         journal_entry.metadata['language'] = self.selected_language_code
 
         journal_entry.file_path = tempfile
@@ -975,7 +985,22 @@ class GetIABooksActivity(activity.Activity):
             else:
                 entry['dcterms_language'] = ''
 
-            books.append(opds.Book(None, entry, ''))
+            if 'source' in ds_objects[i].metadata:
+                entry['source'] = \
+                    ds_objects[i].metadata['source']
+            else:
+                entry['source'] = ''
+
+            if entry['source'] in _SOURCES_CONFIG:
+                repo_configuration = _SOURCES_CONFIG[entry['source']]
+                summary_field = repo_configuration['summary_field']
+                if 'summary' in ds_objects[i].metadata:
+                    entry[summary_field] = ds_objects[i].metadata['summary']
+                else:
+                    entry[summary_field] = ''
+            else:
+                repo_configuration = None
+            books.append(opds.Book(repo_configuration, entry, ''))
         return books
 
     def close(self,  skip_save=False):
