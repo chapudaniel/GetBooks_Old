@@ -488,6 +488,8 @@ class GetIABooksActivity(activity.Activity):
     def selection_cb(self, widget):
         # Testing...
         selected_book = self.listview.get_selected_book()
+        logging.debug("LIBROOOOOO")
+        logging.debug(selected_book._entry)
         if self.source == 'local_books':
             if selected_book:
                 self.download_url = ''
