@@ -72,7 +72,7 @@ class DownloadThread(threading.Thread):
     def _download(self):
 
         def entry_type(entry):
-            for link in self._entry['links']:
+            for link in entry['links']:
                 if link['rel'] in [_REL_OPDS_POPULAR, _REL_OPDS_NEW, _REL_SUBSECTION]:
                     return "CATALOG"
                 else:
@@ -297,6 +297,12 @@ class QueryResult(gobject.GObject):
         Gets the entire booklist
         '''
         return self._booklist
+
+    def get_catalog_list(self):
+        '''
+        Gets the entire booklist
+        '''
+        return self._cataloglist
 
     def is_ready(self):
         '''

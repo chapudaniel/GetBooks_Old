@@ -122,6 +122,12 @@ class GetIABooksActivity(activity.Activity):
             self._books_toolbar = toolbar_box.toolbar
 
         self._create_controls()
+        # Cargar Catalogo Inicial
+        self.query_language = self.default_language
+        self.queryresults = opds.RemoteQueryResult(self.initial_catalog_config,
+                '', None)
+        self.queryresults.connect('updated', self.__query_catalogs_updated_cb)
+
 
         if not self.powerd_running():
             try:
@@ -218,15 +224,13 @@ class GetIABooksActivity(activity.Activity):
         logging.error('_SOURCES %s', _SOURCES)
         logging.error('_SOURCES_CONFIG %s', _SOURCES_CONFIG)
         
-        catalog_config = {}
-        catalog_config['query_uri'] =  _SOURCES_CONFIG[self.default_catalog]['query_uri']
-        catalog_config['opds_cover'] = _SOURCES_CONFIG[self.default_catalog]['opds_cover']
-        catalog_config['source'] = _SOURCES_CONFIG[self.default_catalog]['initial_catalog']
+        self.initial_catalog_config = {}
+        self.initial_catalog_config['query_uri'] =  _SOURCES_CONFIG[self.default_catalog]['initial_catalog']
+        self.initial_catalog_config['opds_cover'] = _SOURCES_CONFIG[self.default_catalog]['opds_cover']
+        self.initial_catalog_config['source'] = self.default_catalog 
 
         logging.debug("CONFIG DEFAULT")
-        logging.debug(catalog_config)
-
-        self.__activate_catalog_cb(None, catalog_config)
+        logging.debug(self.initial_catalog_config)
 
         for section in config.sections():
             if section.startswith('Catalogs'):
@@ -285,20 +289,19 @@ class GetIABooksActivity(activity.Activity):
                 self.__language_changed_cb)
 
         if len(self.catalogs) > 0:
-            bt_catalogs = ToolButton('catalogs')
-            bt_catalogs.set_tooltip(_('Catalogs'))
+            self.bt_catalogs = ToolButton('catalogs')
+            self.bt_catalogs.set_tooltip(_('Catalogs'))
 
-            toolbar.insert(bt_catalogs, -1)
-            bt_catalogs.show()
-            palette = bt_catalogs.get_palette()
-
+            toolbar.insert(self.bt_catalogs, -1)
+            self.bt_catalogs.show()
+            palette = self.bt_catalogs.get_palette()
             for key in self.catalogs.keys():
                 menu_item = MenuItem(key)
                 menu_item.connect('activate',
                     self.__activate_catalog_cb, self.catalogs[key])
                 palette.menu.append(menu_item)
                 menu_item.show()
-            bt_catalogs.connect('clicked',self.__bt_catalogs_clicked_cb)
+            self.bt_catalogs.connect('clicked',self.__bt_catalogs_clicked_cb)
 
         self._device_manager = devicemanager.DeviceManager()
         self._refresh_sources(toolbar)
@@ -715,6 +718,8 @@ class GetIABooksActivity(activity.Activity):
         if len(self.queryresults) == 0:
             self.show_message(_('Sorry, no books could be found.'))
         elif not midway:
+            logging.debug("RESULTADO")
+            logging.debug(query)
             self.hide_message()
             query_language = self.get_query_language()
             logging.error('LANGUAGE %s', query_language)
@@ -731,6 +736,34 @@ class GetIABooksActivity(activity.Activity):
                             _('Sorry, we only found english books.'))
         self.window.set_cursor(None)
         self._allow_suspend()
+
+    def __query_catalogs_updated_cb(self, query, midway):
+        logging.debug('__query_updated_cb midway %s', midway)
+        if len(self.queryresults) == 0:
+            self.show_message(_('Sorry, no books could be found.'))
+        logging.debug("RESULTADO")
+        logging.debug(self.queryresults.get_catalog_list())
+        self.catalogs = {}
+        for catalog_item in self.queryresults.get_catalog_list():
+            catalog_config = {}
+            catalog_config['query_uri'] = ''
+            catalog_config['opds_cover'] = ''
+            catalog_config['source'] = catalog_item.get_title()
+            self.catalogs[catalog_item.get_title()] = catalog_config
+
+        if len(self.catalogs) > 0:
+            palette = self.bt_catalogs.get_palette()
+            logging.debug(dir(palette.menu))
+            logging.debug(palette.menu.__class__)
+        
+            logging.debug(help(palette.menu.remove))
+
+            for key in self.catalogs.keys():
+                menu_item = MenuItem(key)
+                menu_item.connect('activate',
+                    self.__activate_catalog_cb, self.catalogs[key])
+                palette.menu.append(menu_item)
+                menu_item.show()
 
     def __source_changed_cb(self, widget):
         search_terms = self.get_search_terms()
