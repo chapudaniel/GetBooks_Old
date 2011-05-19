@@ -70,6 +70,14 @@ class DownloadThread(threading.Thread):
         self.stopthread = threading.Event()
 
     def _download(self):
+
+        def entry_type(entry):
+            for link in self._entry['links']:
+                if link['rel'] in [_REL_OPDS_POPULAR, _REL_OPDS_NEW, _REL_SUBSECTION]:
+                    return "CATALOG"
+                else:
+                    return 'BOOK'
+
         logging.debug('feedparser version %s', feedparser.__version__)
         if not self.obj.is_local() and self.midway == False:
             uri = self.obj._uri + self.obj._queryterm.replace(' ', '+')
@@ -83,9 +91,13 @@ class DownloadThread(threading.Thread):
             feedobj = feedparser.parse(self.obj._uri)
 
         logging.debug('despues de feedparser %d entries', len(feedobj['entries']))
+
         for entry in feedobj['entries']:
-            #logging.error('%s', entry)
-            self.obj._booklist.append(Book(self.obj._configuration, entry))
+            if entry_type(entry) == 'BOOK':        
+                self.obj._booklist.append(Book(self.obj._configuration, entry))
+            elif entry_type(entry) == 'CATALOG':
+                self.obj._cataloglist.append(Book(self.obj._configuration, entry))
+
         self.obj._feedobj = feedobj
         self.obj._ready = True
         gobject.idle_add(self.obj.notify_updated, self.midway)
@@ -138,13 +150,6 @@ class Book(object):
             else:
                 pass
         return ret
-
-    def entry_type(self):
-        for link in self._entry['links']:
-            if link['rel'] in [_REL_OPDS_POPULAR, _REL_OPDS_NEW, _REL_SUBSECTION]:
-                return "CATALOGO"
-            else:
-                return "DETODO"
 
     def get_publisher(self):
         try:
@@ -235,6 +240,7 @@ class QueryResult(gobject.GObject):
         self._next_uri = ''
         self._ready = False
         self._booklist = []
+        self._cataloglist = []
         self.threads = []
         self._start_download()
 

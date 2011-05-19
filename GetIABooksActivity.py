@@ -80,6 +80,7 @@ class GetIABooksActivity(activity.Activity):
         self.languages = {}
         self._lang_code_handler = languagenames.LanguageNames()
         self.catalogs = {}
+        self._books_toolbar = None
 
         if os.path.exists('/etc/get-books.cfg'):
             self._read_configuration('/etc/get-books.cfg')
@@ -180,12 +181,19 @@ class GetIABooksActivity(activity.Activity):
         config.readfp(open(file_name))
         if config.has_option('GetBooks', 'show_images'):
             self.show_images = config.getboolean('GetBooks', 'show_images')
+
+        if config.has_option('GetBooks', 'default_catalog'):
+            self.default_catalog = config.get('GetBooks', 'default_catalog')
+
         self.languages = {}
         if config.has_option('GetBooks', 'languages'):
             languages_param = config.get('GetBooks', 'languages')
+            self.default_language = None
             for language in languages_param.split(','):
                 lang_code = language.strip()
                 if len(lang_code) > 0:
+                    if not self.default_language:
+                        self.default_language = lang_code
                     self.languages[lang_code] = \
                     self._lang_code_handler.get_full_language_name(lang_code)
 
@@ -200,10 +208,25 @@ class GetIABooksActivity(activity.Activity):
                         repo_config['summary_field'] = config.get(section, 'summary_field')
                 else:
                         repo_config['summary_field'] = None
+
+                if config.has_option(section, 'initial_catalog'):
+                        repo_config['initial_catalog'] = config.get(section, 'initial_catalog')
+                else:
+                        repo_config['initial_catalog'] = None
                 _SOURCES_CONFIG[section] = repo_config
 
         logging.error('_SOURCES %s', _SOURCES)
         logging.error('_SOURCES_CONFIG %s', _SOURCES_CONFIG)
+        
+        catalog_config = {}
+        catalog_config['query_uri'] =  _SOURCES_CONFIG[self.default_catalog]['query_uri']
+        catalog_config['opds_cover'] = _SOURCES_CONFIG[self.default_catalog]['opds_cover']
+        catalog_config['source'] = _SOURCES_CONFIG[self.default_catalog]['initial_catalog']
+
+        logging.debug("CONFIG DEFAULT")
+        logging.debug(catalog_config)
+
+        self.__activate_catalog_cb(None, catalog_config)
 
         for section in config.sections():
             if section.startswith('Catalogs'):
@@ -638,7 +661,10 @@ class GetIABooksActivity(activity.Activity):
     def get_query_language(self):
         query_language = None
         if len(self.languages) > 0:
-            query_language = self._books_toolbar.language_combo.props.value
+            if self._books_toolbar is not None:
+                query_language = self._books_toolbar.language_combo.props.value
+            else:
+                self.default_language
         return query_language
 
     def find_books(self, search_text=''):
