@@ -514,9 +514,7 @@ class GetIABooksActivity(activity.Activity):
     def selection_cb(self, widget):
         # Testing...
         selected_book = self.listview.get_selected_book()
-        logging.debug("LIBROOOOOO")
         logging.debug(selected_book._entry)
-        logging.debug("LINKS")
         logging.debug(selected_book.get_download_links())
         if self.source == 'local_books':
             if selected_book:
@@ -561,7 +559,6 @@ class GetIABooksActivity(activity.Activity):
                 self.selected_language = self.selected_book.get_language()
 
             book_data += _('Language:\t') + self.selected_language + '\n'
-        book_data += _('Type:\t') + self.selected_book.entry_type() + '\n'
         book_data += _('Publisher:\t') + self.selected_publisher + '\n'
         if self.source != 'local_books':
             try:
@@ -715,9 +712,11 @@ class GetIABooksActivity(activity.Activity):
     def __query_updated_cb(self, query, midway):
         logging.debug('__query_updated_cb midway %s', midway)
         self.listview.populate(self.queryresults)
-        if len(self.queryresults) == 0:
+        if len(self.queryresults.get_catalog_list()) == 0:
+            self.show_message(_('New catalog list be found'))        
+        elif len(self.queryresults) == 0:
             self.show_message(_('Sorry, no books could be found.'))
-        elif not midway:
+        if not midway:
             logging.debug("RESULTADO")
             logging.debug(query)
             self.hide_message()
@@ -734,29 +733,32 @@ class GetIABooksActivity(activity.Activity):
                 if only_english:
                     self.show_message(
                             _('Sorry, we only found english books.'))
+        if (len(self.queryresults.get_catalog_list()) > 0):
+            logging.debug("TIENE CATALOGOS Actualizo")
+            self.__query_catalogs_updated_cb(query, midway)
         self.window.set_cursor(None)
         self._allow_suspend()
 
     def __query_catalogs_updated_cb(self, query, midway):
         logging.debug('__query_updated_cb midway %s', midway)
-        if len(self.queryresults) == 0:
-            self.show_message(_('Sorry, no books could be found.'))
-        logging.debug("RESULTADO")
-        logging.debug(self.queryresults.get_catalog_list())
         self.catalogs = {}
         for catalog_item in self.queryresults.get_catalog_list():
             catalog_config = {}
-            catalog_config['query_uri'] = ''
+            logging.debug(catalog_item.get_download_links())
+            link_download = ''
+            download_links = catalog_item.get_download_links()
+            for link in download_links.keys():
+                link_download = download_links[link] 
+                break
+            catalog_config['query_uri'] = link_download
             catalog_config['opds_cover'] = ''
-            catalog_config['source'] = catalog_item.get_title()
-            self.catalogs[catalog_item.get_title()] = catalog_config
+            catalog_config['source'] = catalog_item._configuration['source']
+            self.catalogs[catalog_item.get_title().strip()] = catalog_config
 
         if len(self.catalogs) > 0:
             palette = self.bt_catalogs.get_palette()
-            logging.debug(dir(palette.menu))
-            logging.debug(palette.menu.__class__)
-        
-            logging.debug(help(palette.menu.remove))
+            for menu_item in palette.menu.get_children():
+                palette.menu.remove(menu_item)
 
             for key in self.catalogs.keys():
                 menu_item = MenuItem(key)
