@@ -228,6 +228,7 @@ class GetIABooksActivity(activity.Activity):
         self.initial_catalog_config['query_uri'] =  _SOURCES_CONFIG[self.default_catalog]['initial_catalog']
         self.initial_catalog_config['opds_cover'] = _SOURCES_CONFIG[self.default_catalog]['opds_cover']
         self.initial_catalog_config['source'] = self.default_catalog 
+        self.initial_catalog_config['name'] = self.default_catalog
 
         logging.debug("CONFIG DEFAULT")
         logging.debug(self.initial_catalog_config)
@@ -246,6 +247,7 @@ class GetIABooksActivity(activity.Activity):
                     catalog_config['query_uri'] = config.get(section, catalog)
                     catalog_config['opds_cover'] = opds_cover
                     catalog_config['source'] = catalog_source
+                    catalog_config['name'] = catalog_source
                     self.catalogs[catalog] = catalog_config
 
         logging.error('languages %s', self.languages)
@@ -514,7 +516,6 @@ class GetIABooksActivity(activity.Activity):
     def selection_cb(self, widget):
         # Testing...
         selected_book = self.listview.get_selected_book()
-        logging.debug(selected_book._entry)
         logging.debug(selected_book.get_download_links())
         if self.source == 'local_books':
             if selected_book:
@@ -712,11 +713,11 @@ class GetIABooksActivity(activity.Activity):
     def __query_updated_cb(self, query, midway):
         logging.debug('__query_updated_cb midway %s', midway)
         self.listview.populate(self.queryresults)
-        if len(self.queryresults.get_catalog_list()) == 0:
-            self.show_message(_('New catalog list be found'))        
+        if (len(self.queryresults.get_catalog_list()) > 0):
+            self.show_message(_('New catalog list be found %s') % self.queryresults._configuration["name"] )
         elif len(self.queryresults) == 0:
             self.show_message(_('Sorry, no books could be found.'))
-        if not midway:
+        if not midway and len(self.queryresults) > 0:
             logging.debug("RESULTADO")
             logging.debug(query)
             self.hide_message()
@@ -734,7 +735,6 @@ class GetIABooksActivity(activity.Activity):
                     self.show_message(
                             _('Sorry, we only found english books.'))
         if (len(self.queryresults.get_catalog_list()) > 0):
-            logging.debug("TIENE CATALOGOS Actualizo")
             self.__query_catalogs_updated_cb(query, midway)
         self.window.set_cursor(None)
         self._allow_suspend()
@@ -744,7 +744,6 @@ class GetIABooksActivity(activity.Activity):
         self.catalogs = {}
         for catalog_item in self.queryresults.get_catalog_list():
             catalog_config = {}
-            logging.debug(catalog_item.get_download_links())
             link_download = ''
             download_links = catalog_item.get_download_links()
             for link in download_links.keys():
@@ -753,6 +752,8 @@ class GetIABooksActivity(activity.Activity):
             catalog_config['query_uri'] = link_download
             catalog_config['opds_cover'] = ''
             catalog_config['source'] = catalog_item._configuration['source']
+            catalog_config['name'] = catalog_item.get_title()
+
             self.catalogs[catalog_item.get_title().strip()] = catalog_config
 
         if len(self.catalogs) > 0:
