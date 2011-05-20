@@ -122,12 +122,6 @@ class GetIABooksActivity(activity.Activity):
             self._books_toolbar = toolbar_box.toolbar
 
         self._create_controls()
-        # Cargar Catalogo Inicial
-        self.query_language = self.default_language
-        self.queryresults = opds.RemoteQueryResult(self.initial_catalog_config,
-                '', None)
-        self.queryresults.connect('updated', self.__query_catalogs_updated_cb)
-
 
         if not self.powerd_running():
             try:
@@ -215,26 +209,11 @@ class GetIABooksActivity(activity.Activity):
                 else:
                         repo_config['summary_field'] = None
 
-                if config.has_option(section, 'initial_catalog'):
-                        repo_config['initial_catalog'] = config.get(section, 'initial_catalog')
-                else:
-                        repo_config['initial_catalog'] = None
                 _SOURCES_CONFIG[section] = repo_config
 
         logging.error('_SOURCES %s', _SOURCES)
         logging.error('_SOURCES_CONFIG %s', _SOURCES_CONFIG)
         
-        self.initial_catalog_config = {}
-        self.initial_catalog_config['query_uri'] =  _SOURCES_CONFIG[self.default_catalog]['initial_catalog']
-        self.initial_catalog_config['opds_cover'] = _SOURCES_CONFIG[self.default_catalog]['opds_cover']
-        self.initial_catalog_config['summary_field'] = _SOURCES_CONFIG[self.default_catalog]['summary_field']
-        self.initial_catalog_config['source'] = self.default_catalog 
-        self.initial_catalog_config['name'] = self.default_catalog
-        
-
-        logging.debug("CONFIG DEFAULT")
-        logging.debug(self.initial_catalog_config)
-
         for section in config.sections():
             if section.startswith('Catalogs'):
                 catalog_source = section.split('_')[1]
@@ -249,7 +228,8 @@ class GetIABooksActivity(activity.Activity):
                     catalog_config['query_uri'] = config.get(section, catalog)
                     catalog_config['opds_cover'] = opds_cover
                     catalog_config['source'] = catalog_source
-                    catalog_config['name'] = catalog_source
+                    catalog_config['name'] = catalog
+                    catalog_config['summary_field'] = source_config['summary_field']
                     self.catalogs[catalog] = catalog_config
 
         logging.error('languages %s', self.languages)
