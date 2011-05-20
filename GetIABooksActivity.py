@@ -227,8 +227,10 @@ class GetIABooksActivity(activity.Activity):
         self.initial_catalog_config = {}
         self.initial_catalog_config['query_uri'] =  _SOURCES_CONFIG[self.default_catalog]['initial_catalog']
         self.initial_catalog_config['opds_cover'] = _SOURCES_CONFIG[self.default_catalog]['opds_cover']
+        self.initial_catalog_config['summary_field'] = _SOURCES_CONFIG[self.default_catalog]['summary_field']
         self.initial_catalog_config['source'] = self.default_catalog 
         self.initial_catalog_config['name'] = self.default_catalog
+        
 
         logging.debug("CONFIG DEFAULT")
         logging.debug(self.initial_catalog_config)
@@ -714,7 +716,7 @@ class GetIABooksActivity(activity.Activity):
         logging.debug('__query_updated_cb midway %s', midway)
         self.listview.populate(self.queryresults)
         if (len(self.queryresults.get_catalog_list()) > 0):
-            self.show_message(_('New catalog list be found %s') % self.queryresults._configuration["name"] )
+            self.show_message(_('New catalog list %s was found') % self.queryresults._configuration["name"] )
         elif len(self.queryresults) == 0:
             self.show_message(_('Sorry, no books could be found.'))
         if not midway and len(self.queryresults) > 0:
@@ -750,9 +752,10 @@ class GetIABooksActivity(activity.Activity):
                 link_download = download_links[link] 
                 break
             catalog_config['query_uri'] = link_download
-            catalog_config['opds_cover'] = ''
+            catalog_config['opds_cover'] = catalog_item._configuration['opds_cover']
             catalog_config['source'] = catalog_item._configuration['source']
             catalog_config['name'] = catalog_item.get_title()
+            catalog_config['summary_field'] = catalog_item._configuration['summary_field']
 
             self.catalogs[catalog_item.get_title().strip()] = catalog_config
 
