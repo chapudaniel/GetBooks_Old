@@ -35,8 +35,6 @@ import feedparser
 _logger = logging.getLogger('get-ia-books-activity')
 
 _REL_OPDS_ACQUISTION = u'http://opds-spec.org/acquisition'
-_REL_OPDS_POPULAR = u'http://opds-spec.org/sort/popular'
-_REL_OPDS_NEW = u'http://opds-spec.org/sort/new'
 _REL_SUBSECTION = 'subsection'
 
 gobject.threads_init()
@@ -73,7 +71,7 @@ class DownloadThread(threading.Thread):
 
         def entry_type(entry):
             for link in entry['links']:
-                if link['rel'] in [_REL_OPDS_POPULAR, _REL_OPDS_NEW, _REL_SUBSECTION]:
+                if link['rel'] in [_REL_SUBSECTION]:
                     return "CATALOG"
                 else:
                     return 'BOOK'

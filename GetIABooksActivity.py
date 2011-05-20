@@ -80,7 +80,6 @@ class GetIABooksActivity(activity.Activity):
         self.languages = {}
         self._lang_code_handler = languagenames.LanguageNames()
         self.catalogs = {}
-        self._books_toolbar = None
 
         if os.path.exists('/etc/get-books.cfg'):
             self._read_configuration('/etc/get-books.cfg')
@@ -181,19 +180,12 @@ class GetIABooksActivity(activity.Activity):
         config.readfp(open(file_name))
         if config.has_option('GetBooks', 'show_images'):
             self.show_images = config.getboolean('GetBooks', 'show_images')
-
-        if config.has_option('GetBooks', 'default_catalog'):
-            self.default_catalog = config.get('GetBooks', 'default_catalog')
-
         self.languages = {}
         if config.has_option('GetBooks', 'languages'):
             languages_param = config.get('GetBooks', 'languages')
-            self.default_language = None
             for language in languages_param.split(','):
                 lang_code = language.strip()
                 if len(lang_code) > 0:
-                    if not self.default_language:
-                        self.default_language = lang_code
                     self.languages[lang_code] = \
                     self._lang_code_handler.get_full_language_name(lang_code)
 
@@ -208,12 +200,11 @@ class GetIABooksActivity(activity.Activity):
                         repo_config['summary_field'] = config.get(section, 'summary_field')
                 else:
                         repo_config['summary_field'] = None
-
                 _SOURCES_CONFIG[section] = repo_config
 
         logging.error('_SOURCES %s', _SOURCES)
         logging.error('_SOURCES_CONFIG %s', _SOURCES_CONFIG)
-        
+
         for section in config.sections():
             if section.startswith('Catalogs'):
                 catalog_source = section.split('_')[1]
@@ -498,7 +489,6 @@ class GetIABooksActivity(activity.Activity):
     def selection_cb(self, widget):
         # Testing...
         selected_book = self.listview.get_selected_book()
-        logging.debug(selected_book.get_download_links())
         if self.source == 'local_books':
             if selected_book:
                 self.download_url = ''
@@ -540,7 +530,6 @@ class GetIABooksActivity(activity.Activity):
                         self.selected_book.get_language())
             except:
                 self.selected_language = self.selected_book.get_language()
-
             book_data += _('Language:\t') + self.selected_language + '\n'
         book_data += _('Publisher:\t') + self.selected_publisher + '\n'
         if self.source != 'local_books':
@@ -644,10 +633,7 @@ class GetIABooksActivity(activity.Activity):
     def get_query_language(self):
         query_language = None
         if len(self.languages) > 0:
-            if self._books_toolbar is not None:
-                query_language = self._books_toolbar.language_combo.props.value
-            else:
-                self.default_language
+            query_language = self._books_toolbar.language_combo.props.value
         return query_language
 
     def find_books(self, search_text=''):
@@ -696,12 +682,11 @@ class GetIABooksActivity(activity.Activity):
         logging.debug('__query_updated_cb midway %s', midway)
         self.listview.populate(self.queryresults)
         if (len(self.queryresults.get_catalog_list()) > 0):
-            self.show_message(_('New catalog list %s was found') % self.queryresults._configuration["name"] )
+            self.show_message(_('New catalog list %s was found') % self.queryresults._configuration["name"])
+            self.catalogs_updated(query, midway)
         elif len(self.queryresults) == 0:
             self.show_message(_('Sorry, no books could be found.'))
         if not midway and len(self.queryresults) > 0:
-            logging.debug("RESULTADO")
-            logging.debug(query)
             self.hide_message()
             query_language = self.get_query_language()
             logging.error('LANGUAGE %s', query_language)
@@ -716,34 +701,29 @@ class GetIABooksActivity(activity.Activity):
                 if only_english:
                     self.show_message(
                             _('Sorry, we only found english books.'))
-        if (len(self.queryresults.get_catalog_list()) > 0):
-            self.__query_catalogs_updated_cb(query, midway)
         self.window.set_cursor(None)
         self._allow_suspend()
 
-    def __query_catalogs_updated_cb(self, query, midway):
-        logging.debug('__query_updated_cb midway %s', midway)
+    def catalogs_updated(self, query, midway):
         self.catalogs = {}
         for catalog_item in self.queryresults.get_catalog_list():
             catalog_config = {}
-            link_download = ''
+            download_link = ''
             download_links = catalog_item.get_download_links()
             for link in download_links.keys():
-                link_download = download_links[link] 
+                download_link = download_links[link] 
                 break
-            catalog_config['query_uri'] = link_download
+            catalog_config['query_uri'] = download_link
             catalog_config['opds_cover'] = catalog_item._configuration['opds_cover']
             catalog_config['source'] = catalog_item._configuration['source']
             catalog_config['name'] = catalog_item.get_title()
             catalog_config['summary_field'] = catalog_item._configuration['summary_field']
-
             self.catalogs[catalog_item.get_title().strip()] = catalog_config
 
         if len(self.catalogs) > 0:
             palette = self.bt_catalogs.get_palette()
             for menu_item in palette.menu.get_children():
                 palette.menu.remove(menu_item)
-
             for key in self.catalogs.keys():
                 menu_item = MenuItem(key)
                 menu_item.connect('activate',
